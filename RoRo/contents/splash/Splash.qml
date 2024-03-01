@@ -76,11 +76,11 @@ Image {
     }
 
         Text {
-            text: "Time to cook!"
+            text: "「リミターカット！ フルドライブ！」"
             font.pointSize: 24
             color: "#ffffff"
             opacity:0.85
-            font { family: "OpenSans Dark"; weight: Font.Dark ;capitalization: Font.Capitalize}
+            font { family: "OpenSans Dark"; weight: Font.Dark}
             anchors.horizontalCenter: parent.horizontalCenter
             y: (parent.height - height) / 1.1
         }
