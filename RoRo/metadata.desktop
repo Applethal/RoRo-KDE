@@ -1,20 +1,20 @@
-[ContrastEffect]
-contrast=1.0
-enabled=true
-intensity=1.0
-saturation=1.4
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
 
-[Desktop Entry]
-Comment=RoRo theme please no copyright strike
-Name=RoRo
-X-KDE-PluginInfo-Author=Applethal
-X-KDE-PluginInfo-EnabledByDefault=true
-X-KDE-PluginInfo-License=GPLv3
-X-KDE-PluginInfo-Name=RoRo
-X-Plasma-API=5.0
+                "Name": "Applethal"
+            }
+        ],
+        "Category": "",
+        "Description": "I love RoRo, please no copyright strikes",
+        "Id": "RoRo",
+        "License": "GPLv3",
+        "Name": "RoRo",
+        "Website": ""
+    },
+    "Keywords": "Appearance;Look and Feel;",
+    "X-Plasma-APIVersion": "2"
+}
 
-[Wallpaper]
-defaultFileSuffix=.png
-defaultHeight=1080
-defaultWallpaperTheme=Next
-defaultWidth=1920
