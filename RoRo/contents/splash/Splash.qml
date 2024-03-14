@@ -1,70 +1,46 @@
 /*
- *   Copyright 2014 Marco Martin <mart@kde.org>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License version 2,
- *   or (at your option) any later version, as published by the Free
- *   Software Foundation
+    SPDX-FileCopyrightText: 2014 Marco Martin <mart@kde.org>
 
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details
- *
- *   You should have received a copy of the GNU General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
-import QtQuick 2.5
-import QtGraphicalEffects 1.0
+import QtQuick
+import org.kde.kirigami 2 as Kirigami
 
-Image {
+Rectangle {
     id: root
-    source: "images/background.png"
-    fillMode: Image.PreserveAspectCrop
-    
+    color: "#070000"
+
     property int stage
-    
+
     onStageChanged: {
-        if (stage == 1) {
-            introAnimation.running = true
-            preOpacityAnimation.from = 0;
-            preOpacityAnimation.to = 1;
-            preOpacityAnimation.running = true;
-        }
-        if (stage == 4) {
-            preOpacityAnimation.from = 1;
-            preOpacityAnimation.to = 0;
-            preOpacityAnimation.running = true;
-            pausa.start();
+        if (stage == 2) {
+            introAnimation.running = true;
+        } else if (stage == 5) {
+            introAnimation.target = busyIndicator;
+            introAnimation.from = 1;
+            introAnimation.to = 0;
+            introAnimation.running = true;
         }
     }
 
     Item {
         id: content
-        anchors.rightMargin: 0
-        anchors.bottomMargin: 0
-        anchors.leftMargin: 0
-        anchors.topMargin: 0
         anchors.fill: parent
-        opacity: 1
-        TextMetrics {
-            id: units
-            text: "M"
-            property int gridUnit: boundingRect.height
-            property int largeSpacing: units.gridUnit
-            property int smallSpacing: Math.max(2, gridUnit/4)
-        }
+        opacity: 0
 
         Image {
             id: logo
-            property real size: units.gridUnit * 12
+            //match SDDM/lockscreen avatar positioning
+            readonly property real size: Kirigami.Units.gridUnit * 8
+
             anchors.centerIn: parent
-            source: "images/logo.png"
-            sourceSize.width: size
-            sourceSize.height: size
+
+            asynchronous: true
+            source: "images/eos-arm.svg"
+
+            sourceSize.width: 262
+            sourceSize.height: 184
             RotationAnimator on rotation {
                 running: true
                 loops: Animation.Infinite
@@ -73,8 +49,31 @@ Image {
                 duration: 1500
             }
         }
-    }
 
+        // TODO: port to PlasmaComponents3.BusyIndicator
+            Image {
+                id: busyIndicator
+                //in the middle of the remaining space
+                y: parent.height - (parent.height - logo.y) / 2 - height/2
+                anchors.horizontalCenter: parent.horizontalCenter
+                asynchronous: true
+                source: "images/busy_arm.svg"
+                sourceSize.height: Kirigami.Units.gridUnit * 2
+                sourceSize.width: Kirigami.Units.gridUnit * 2
+                RotationAnimator on rotation {
+                    id: rotationAnimator
+                    from: 0
+                    to: 360
+                    // Not using a standard duration value because we don't want the
+                    // animation to spin faster or slower based on the user's animation
+                    // scaling preferences; it doesn't make sense in this context
+                    duration: 2000
+                    loops: Animation.Infinite
+                    // Don't want it to animate at all if the user has disabled animations
+                    running: Kirigami.Units.longDuration > 1
+                }
+
+        }
         Text {
             text: "「リミターカット！ フルドライブ！」"
             font.pointSize: 24
@@ -84,71 +83,24 @@ Image {
             anchors.horizontalCenter: parent.horizontalCenter
             y: (parent.height - height) / 1.1
         }
-        
-    Image {
-        id: topRect
-        anchors.horizontalCenter: parent.horizontalCenter
-        y: root.height
-        source: "images/rectangle.svg"
-        Rectangle {
-            y: 232
-            radius: 0
-            anchors.horizontalCenterOffset: 0
-            color: "#ff7f7f"
+        Row {
+            spacing: Kirigami.Units.largeSpacing
             anchors {
                 bottom: parent.bottom
-                bottomMargin: 50
-                horizontalCenter: parent.horizontalCenter
+                right: parent.right
+                margins: Kirigami.Units.gridUnit
             }
-            height: 2
-            width: height*170
-            Rectangle {
-                id: topRectRectangle
-                radius: 1
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    bottom: parent.bottom
-                }
-                width: (parent.width / 6) * (stage - 0.01)
-                color: "#7f3fbf"
-                Behavior on width {
-                    PropertyAnimation {
-                        duration: 200
-                        easing.type: Easing.InOutQuad
-                    }
-                }
-            }
+
         }
     }
 
-    SequentialAnimation {
+    OpacityAnimator {
         id: introAnimation
         running: false
-
-        ParallelAnimation {
-            PropertyAnimation {
-                property: "y"
-                target: topRect
-                to: ((root.height / 3) * 2) - 170
-                duration: 2000
-                easing.type: Easing.InOutBack
-                easing.overshoot: 1.0
-            }
-            
-        }
+        target: content
+        from: 0
+        to: 1
+        duration: Kirigami.Units.veryLongDuration * 2
+        easing.type: Easing.InOutQuad
     }
-
-    Timer {
-        id: pausa
-        interval: 1500; running: false; repeat: false;
-        onTriggered: root.viewLoadingText();
-    }
-
-    function viewLoadingText() {
-        opacityAnimation.from = 0;
-        opacityAnimation.to = 1;
-        opacityAnimation.running = true;
-    }
-
 }
