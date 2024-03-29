@@ -1,7 +1,7 @@
 Run this to install it, I assume everyone have their KDE themes in the default look and feel folder. Replace USERNAME with your username.
 
 ```
-sudo cp -r ~/RoRo /home/USERNAME/.local/share/plasma/look-and-feel
+sudo cp -r ~/RoRo .local/share/plasma/look-and-feel
 
 ```
 
