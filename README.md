@@ -1,7 +1,6 @@
-Run this to install it, I assume everyone have their KDE themes in the default look and feel folder. Replace USERNAME with your username.
-
+For the splash screen, relocate the RoRo folder to this directory (Assuming this is your default look and feel directory)
 ```
-sudo cp -r ~/RoRo .local/share/plasma/look-and-feel
+$HOME/.local/share/plasma/look-and-feel/
 
 ```
 
