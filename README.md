@@ -4,5 +4,5 @@ $HOME/.local/share/plasma/look-and-feel/
 
 ```
 
-#Update
+## Update
 Plasma 6 broke the libraries so I had to fix them
