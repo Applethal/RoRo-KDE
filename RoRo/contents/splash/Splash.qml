@@ -9,8 +9,8 @@ import org.kde.kirigami 2 as Kirigami
 
 Rectangle {
     id: root
-    color: "#070000"
-
+    color: "#a30c4b"
+    // This is where you change the background colour
     property int stage
 
     onStageChanged: {
@@ -28,8 +28,8 @@ Rectangle {
         id: content
         anchors.fill: parent
         opacity: 0
-        width: 400
-        height: 400
+        width: 750
+        height: 750
         Image {
             id: logo
             //match SDDM/lockscreen avatar positioning
@@ -59,8 +59,8 @@ Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
                 asynchronous: true
                 source: "images/busy_arm.svg"
-                sourceSize.height: Kirigami.Units.gridUnit * 2
-                sourceSize.width: Kirigami.Units.gridUnit * 2
+                sourceSize.height: Kirigami.Units.gridUnit * 3
+                sourceSize.width: Kirigami.Units.gridUnit * 3
                 RotationAnimator on rotation {
                     id: rotationAnimator
                     from: 0
